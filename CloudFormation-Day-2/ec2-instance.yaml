@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "ec2 instance automation for dev environment"
+Metadata: {}
+
+Parameters: {}
+
+Mappings: {}
+
+Conditions: {}
+
+Resources:
+  DevWebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: n-virginia-test-key
+      ImageId: ami-0261755bbcb8c4a84
+      InstanceType: t2.micro
+      Monitoring: true
+      SecurityGroupIds:
+        - sg-01ac6ba4f5926a28b
+      UserData: !Base64 |
+        #!/bin/bash
+        sudo su
+        apt update -y
+        apt -y install apache2
+        systemctl start apache2
+        systemctl enable apache2
+        apt install wget -y
+        wget https://github.com/awanmbandi/google-cloud-projects/raw/jjtech-flix-app/jjtech-streaming-application-v1.zip 
+        apt install unzip -y
+        unzip jjtech-streaming-application-v1.zip
+        rm -f /var/www/html/index.html
+        cp -rf jjtech-streaming-application-v1/* /var/www/html/
+      Tags:
+        - Key: Name
+          Value: dev_web_server
+
+Outputs: {}

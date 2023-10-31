@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Provisioned VPC and 3 subnets using cloud formation"
+Metadata: {}
+
+Parameters: {}
+
+Mappings: {}
+
+Conditions: {}
+
+Resources:
+  cfnVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: cfnVpc
+
+  webSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1a
+      VpcId: !Ref cfnVpc
+      CidrBlock: 10.0.1.0/24
+      Tags:
+        - Key: Name
+          Value: webSubnet
+
+  appSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1b
+      VpcId: !Ref cfnVpc
+      CidrBlock: 10.0.2.0/24
+      Tags:
+        - Key: Name
+          Value: appSubnet
+
+  dbSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1c
+      VpcId: !Ref cfnVpc
+      CidrBlock: 10.0.3.0/24
+      Tags:
+        - Key: Name
+          Value: dbSubnet
+
+Outputs: {}
